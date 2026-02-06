@@ -17,9 +17,9 @@ class BrowserToolbar extends StatelessWidget {
       height: 52,
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: FileBeamTheme.bgSurface.withValues(alpha: 0.8),
+        color: FileDroidTheme.bgSurface.withValues(alpha: 0.8),
         border: const Border(
-          bottom: BorderSide(color: FileBeamTheme.borderSubtle),
+          bottom: BorderSide(color: FileDroidTheme.borderSubtle),
         ),
       ),
       child: Flex(
@@ -78,20 +78,20 @@ class BrowserToolbar extends StatelessWidget {
           _GradientButton(
             label: '\u2303 Upload',
             tooltip: 'Upload files to device',
-            gradient: FileBeamTheme.uploadGradient,
+            gradient: FileDroidTheme.uploadGradient,
             onTap: () => _handleUpload(context, browser, transfer),
           ),
           const SizedBox(width: 6),
           // Download button
           _GradientButton(
             label: browser.hasSelection
-                ? '\u2304 DL (${browser.selectionCount})'
-                : '\u2304 DL',
+                ? '\u2304 Download (${browser.selectionCount})'
+                : '\u2304 Download',
             tooltip: browser.hasSelection
                 ? 'Download ${browser.selectionCount} selected files'
                 : 'Select files to download',
             gradient: browser.hasSelection
-                ? FileBeamTheme.downloadGradient
+                ? FileDroidTheme.downloadGradient
                 : null,
             enabled: browser.hasSelection,
             onTap: browser.hasSelection
@@ -169,21 +169,21 @@ class _NavButtonState extends State<_NavButton> {
             height: 32,
             decoration: BoxDecoration(
               color: _hovering && widget.enabled
-                  ? FileBeamTheme.bgElevated
+                  ? FileDroidTheme.bgElevated
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: widget.enabled
-                    ? FileBeamTheme.borderLight
-                    : FileBeamTheme.borderSubtle,
+                    ? FileDroidTheme.borderLight
+                    : FileDroidTheme.borderSubtle,
               ),
             ),
             child: Icon(
               widget.icon,
               size: 18,
               color: widget.enabled
-                  ? FileBeamTheme.textPrimary
-                  : FileBeamTheme.textTertiary,
+                  ? FileDroidTheme.textPrimary
+                  : FileDroidTheme.textTertiary,
             ),
           ),
         ),
@@ -229,12 +229,12 @@ class _ToolButtonState extends State<_ToolButton> {
             height: 32,
             decoration: BoxDecoration(
               color: widget.isActive
-                  ? FileBeamTheme.accentIndigo.withValues(alpha: 0.15)
+                  ? FileDroidTheme.accentIndigo.withValues(alpha: 0.15)
                   : _hovering
-                      ? FileBeamTheme.bgElevated
+                      ? FileDroidTheme.bgElevated
                       : Colors.transparent,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: FileBeamTheme.borderLight),
+              border: Border.all(color: FileDroidTheme.borderLight),
             ),
             child: Center(
               child: Text(
@@ -243,8 +243,8 @@ class _ToolButtonState extends State<_ToolButton> {
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: widget.isActive
-                      ? FileBeamTheme.accentCyan
-                      : FileBeamTheme.textSecondary,
+                      ? FileDroidTheme.accentCyan
+                      : FileDroidTheme.textSecondary,
                 ),
               ),
             ),
@@ -298,12 +298,12 @@ class _GradientButtonState extends State<_GradientButton> {
               gradient: widget.gradient,
               color: widget.gradient == null
                   ? (_hovering
-                      ? FileBeamTheme.bgElevated.withValues(alpha: 0.9)
-                      : FileBeamTheme.bgElevated)
+                      ? FileDroidTheme.bgElevated.withValues(alpha: 0.9)
+                      : FileDroidTheme.bgElevated)
                   : null,
               borderRadius: BorderRadius.circular(8),
               border: widget.gradient == null
-                  ? Border.all(color: FileBeamTheme.borderLight)
+                  ? Border.all(color: FileDroidTheme.borderLight)
                   : null,
             ),
             child: Text(
@@ -313,7 +313,7 @@ class _GradientButtonState extends State<_GradientButton> {
                 fontWeight: FontWeight.w600,
                 color: widget.enabled
                     ? Colors.white
-                    : FileBeamTheme.textTertiary,
+                    : FileDroidTheme.textTertiary,
               ),
             ),
           ),
@@ -336,9 +336,9 @@ class _Breadcrumb extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        color: FileBeamTheme.bgElevated.withValues(alpha: 0.5),
+        color: FileDroidTheme.bgElevated.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: FileBeamTheme.borderSubtle),
+        border: Border.all(color: FileDroidTheme.borderSubtle),
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -352,7 +352,7 @@ class _Breadcrumb extends StatelessWidget {
                     '>',
                     style: TextStyle(
                       fontSize: 12,
-                      color: FileBeamTheme.textTertiary,
+                      color: FileDroidTheme.textTertiary,
                     ),
                   ),
                 ),
@@ -367,8 +367,8 @@ class _Breadcrumb extends StatelessWidget {
                       fontFamily: 'Menlo',
                       fontWeight: FontWeight.w500,
                       color: i == segments.length - 1
-                          ? FileBeamTheme.accentCyan
-                          : FileBeamTheme.textSecondary,
+                          ? FileDroidTheme.accentCyan
+                          : FileDroidTheme.textSecondary,
                     ),
                   ),
                 ),

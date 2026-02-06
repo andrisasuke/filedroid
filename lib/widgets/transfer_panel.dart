@@ -14,9 +14,9 @@ class TransferPanel extends StatelessWidget {
     return Container(
       width: 280,
       decoration: BoxDecoration(
-        color: FileBeamTheme.bgSurface.withValues(alpha: 0.9),
+        color: FileDroidTheme.bgSurface.withValues(alpha: 0.9),
         border: const Border(
-          left: BorderSide(color: FileBeamTheme.borderSubtle),
+          left: BorderSide(color: FileDroidTheme.borderSubtle),
         ),
       ),
       child: Column(
@@ -27,7 +27,7 @@ class TransferPanel extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: const BoxDecoration(
               border: Border(
-                bottom: BorderSide(color: FileBeamTheme.borderSubtle),
+                bottom: BorderSide(color: FileDroidTheme.borderSubtle),
               ),
             ),
             child: Row(
@@ -37,7 +37,7 @@ class TransferPanel extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: FileBeamTheme.textPrimary,
+                    color: FileDroidTheme.textPrimary,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -46,7 +46,7 @@ class TransferPanel extends StatelessWidget {
                     width: 22,
                     height: 22,
                     decoration: const BoxDecoration(
-                      color: FileBeamTheme.greenSuccess,
+                      color: FileDroidTheme.greenSuccess,
                       shape: BoxShape.circle,
                     ),
                     child: Center(
@@ -73,7 +73,7 @@ class TransferPanel extends StatelessWidget {
                           'Clear',
                           style: TextStyle(
                             fontSize: 13,
-                            color: FileBeamTheme.accentCyan,
+                            color: FileDroidTheme.accentCyan,
                           ),
                         ),
                       ),
@@ -90,7 +90,7 @@ class TransferPanel extends StatelessWidget {
                       'No transfers',
                       style: TextStyle(
                         fontSize: 13,
-                        color: FileBeamTheme.textTertiary,
+                        color: FileDroidTheme.textTertiary,
                       ),
                     ),
                   )
@@ -109,7 +109,7 @@ class TransferPanel extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: const BoxDecoration(
                 border: Border(
-                  top: BorderSide(color: FileBeamTheme.borderSubtle),
+                  top: BorderSide(color: FileDroidTheme.borderSubtle),
                 ),
               ),
               child: Row(
@@ -119,7 +119,7 @@ class TransferPanel extends StatelessWidget {
                       '${transfer.activeTasks.length} active \u2022 ${transfer.queuedTasks.length} queued',
                       style: const TextStyle(
                         fontSize: 11,
-                        color: FileBeamTheme.textTertiary,
+                        color: FileDroidTheme.textTertiary,
                       ),
                     )
                   else if (transfer.completedTasks.isNotEmpty)
@@ -128,7 +128,7 @@ class TransferPanel extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w500,
-                        color: FileBeamTheme.greenSuccess,
+                        color: FileDroidTheme.greenSuccess,
                       ),
                     ),
                   const Spacer(),
@@ -137,7 +137,7 @@ class TransferPanel extends StatelessWidget {
                       '~${transfer.overallSpeed}',
                       style: const TextStyle(
                         fontSize: 11,
-                        color: FileBeamTheme.textTertiary,
+                        color: FileDroidTheme.textTertiary,
                       ),
                     ),
                   if (transfer.completedTasks.isNotEmpty &&
@@ -146,7 +146,7 @@ class TransferPanel extends StatelessWidget {
                       '${transfer.completedTasks.length} files',
                       style: const TextStyle(
                         fontSize: 11,
-                        color: FileBeamTheme.textTertiary,
+                        color: FileDroidTheme.textTertiary,
                       ),
                     ),
                 ],
@@ -169,7 +169,7 @@ class _TransferItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: const BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: FileBeamTheme.borderSubtle),
+          bottom: BorderSide(color: FileDroidTheme.borderSubtle),
         ),
       ),
       child: Row(
@@ -192,7 +192,7 @@ class _TransferItem extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
-                    color: FileBeamTheme.textPrimary,
+                    color: FileDroidTheme.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 3),
@@ -225,10 +225,10 @@ class _TransferItem extends StatelessWidget {
                       width: 22,
                       height: 22,
                       decoration: BoxDecoration(
-                        color: FileBeamTheme.roseError.withValues(alpha: 0.15),
+                        color: FileDroidTheme.roseError.withValues(alpha: 0.15),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.close, size: 13, color: FileBeamTheme.roseError),
+                      child: const Icon(Icons.close, size: 13, color: FileDroidTheme.roseError),
                     ),
                   ),
                 ),
@@ -243,8 +243,8 @@ class _TransferItem extends StatelessWidget {
                 height: 22,
                 decoration: BoxDecoration(
                   color: task.direction == TransferDirection.toMac
-                      ? FileBeamTheme.purple
-                      : FileBeamTheme.greenSuccess,
+                      ? FileDroidTheme.purple
+                      : FileDroidTheme.greenSuccess,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(Icons.check, size: 13, color: Colors.white),
@@ -262,7 +262,7 @@ class _TransferItem extends StatelessWidget {
           width: 24,
           height: 20,
           decoration: BoxDecoration(
-            color: FileBeamTheme.greenSuccess.withValues(alpha: 0.15),
+            color: FileDroidTheme.greenSuccess.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(4),
           ),
           child: const Center(
@@ -271,15 +271,15 @@ class _TransferItem extends StatelessWidget {
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w700,
-                color: FileBeamTheme.greenSuccess,
+                color: FileDroidTheme.greenSuccess,
               ),
             ),
           ),
         );
       case TransferStatus.inProgress:
         final color = task.direction == TransferDirection.toMac
-            ? FileBeamTheme.purple
-            : FileBeamTheme.accentCyan;
+            ? FileDroidTheme.purple
+            : FileDroidTheme.accentCyan;
         return Container(
           width: 24,
           height: 20,
@@ -303,7 +303,7 @@ class _TransferItem extends StatelessWidget {
           width: 24,
           height: 20,
           decoration: BoxDecoration(
-            color: FileBeamTheme.roseError.withValues(alpha: 0.15),
+            color: FileDroidTheme.roseError.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(4),
           ),
           child: const Center(
@@ -312,7 +312,7 @@ class _TransferItem extends StatelessWidget {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
-                color: FileBeamTheme.roseError,
+                color: FileDroidTheme.roseError,
               ),
             ),
           ),
@@ -322,7 +322,7 @@ class _TransferItem extends StatelessWidget {
           width: 24,
           height: 20,
           decoration: BoxDecoration(
-            color: FileBeamTheme.amberWarning.withValues(alpha: 0.15),
+            color: FileDroidTheme.amberWarning.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(4),
           ),
           child: const Center(
@@ -331,7 +331,7 @@ class _TransferItem extends StatelessWidget {
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w700,
-                color: FileBeamTheme.amberWarning,
+                color: FileDroidTheme.amberWarning,
               ),
             ),
           ),
@@ -341,7 +341,7 @@ class _TransferItem extends StatelessWidget {
           width: 24,
           height: 20,
           decoration: BoxDecoration(
-            color: FileBeamTheme.bgElevated,
+            color: FileDroidTheme.bgElevated,
             borderRadius: BorderRadius.circular(4),
           ),
           child: Center(
@@ -350,7 +350,7 @@ class _TransferItem extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
-                color: FileBeamTheme.textTertiary,
+                color: FileDroidTheme.textTertiary,
               ),
             ),
           ),
@@ -365,7 +365,7 @@ class _TransferItem extends StatelessWidget {
           '${task.formattedTotal} \u2022 Done',
           style: const TextStyle(
             fontSize: 11,
-            color: FileBeamTheme.textTertiary,
+            color: FileDroidTheme.textTertiary,
           ),
         );
       case TransferStatus.inProgress:
@@ -373,7 +373,7 @@ class _TransferItem extends StatelessWidget {
           '${task.formattedTotal} \u2022 ${task.formattedSpeed}',
           style: const TextStyle(
             fontSize: 11,
-            color: FileBeamTheme.textTertiary,
+            color: FileDroidTheme.textTertiary,
           ),
         );
       case TransferStatus.failed:
@@ -382,7 +382,7 @@ class _TransferItem extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
             fontSize: 11,
-            color: FileBeamTheme.roseError,
+            color: FileDroidTheme.roseError,
           ),
         );
       case TransferStatus.queued:
@@ -390,7 +390,7 @@ class _TransferItem extends StatelessWidget {
           '${task.formattedTotal} \u2022 Queued',
           style: const TextStyle(
             fontSize: 11,
-            color: FileBeamTheme.textTertiary,
+            color: FileDroidTheme.textTertiary,
           ),
         );
       case TransferStatus.cancelled:
@@ -398,7 +398,7 @@ class _TransferItem extends StatelessWidget {
           'Cancelled',
           style: TextStyle(
             fontSize: 11,
-            color: FileBeamTheme.amberWarning,
+            color: FileDroidTheme.amberWarning,
           ),
         );
     }
@@ -411,12 +411,12 @@ class _TransferItem extends StatelessWidget {
         height: 4,
         child: Stack(
           children: [
-            Container(color: FileBeamTheme.bgElevated),
+            Container(color: FileDroidTheme.bgElevated),
             FractionallySizedBox(
               widthFactor: task.progress,
               child: Container(
                 decoration: const BoxDecoration(
-                  gradient: FileBeamTheme.progressGradient,
+                  gradient: FileDroidTheme.progressGradient,
                 ),
               ),
             ),
@@ -431,7 +431,7 @@ class _TransferItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(2),
       child: SizedBox(
         height: 4,
-        child: Container(color: FileBeamTheme.bgElevated),
+        child: Container(color: FileDroidTheme.bgElevated),
       ),
     );
   }

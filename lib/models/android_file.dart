@@ -51,11 +51,11 @@ class AndroidFile {
           ? name.substring(0, 2).toUpperCase()
           : name.toUpperCase();
     }
-    return FileBeamTheme.badgeTextForExtension(extension);
+    return FileDroidTheme.badgeTextForExtension(extension);
   }
 
   Color get badgeColor {
-    if (isDirectory) return FileBeamTheme.dirBadgeColor;
-    return FileBeamTheme.badgeColorForExtension(extension);
+    if (isDirectory) return FileDroidTheme.dirBadgeColor;
+    return FileDroidTheme.badgeColorForExtension(extension);
   }
 }

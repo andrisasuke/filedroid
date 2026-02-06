@@ -94,7 +94,7 @@ class AdbService {
 
   Future<File> _configFile() async {
     final home = Platform.environment['HOME'] ?? '';
-    return File('$home/Library/Application Support/com.filebeam/adb_path.txt');
+    return File('$home/Library/Application Support/com.filedroid/adb_path.txt');
   }
 
   Future<String?> _resolveAdbPath() async {

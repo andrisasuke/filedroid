@@ -20,7 +20,7 @@ class _AdbSetupScreenState extends State<AdbSetupScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: FileBeamTheme.bgPrimary,
+      color: FileDroidTheme.bgPrimary,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -30,7 +30,7 @@ class _AdbSetupScreenState extends State<AdbSetupScreen> {
               width: 72,
               height: 72,
               decoration: BoxDecoration(
-                color: FileBeamTheme.bgElevated,
+                color: FileDroidTheme.bgElevated,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: const Center(
@@ -39,7 +39,7 @@ class _AdbSetupScreenState extends State<AdbSetupScreen> {
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: FileBeamTheme.amberWarning,
+                    color: FileDroidTheme.amberWarning,
                   ),
                 ),
               ),
@@ -50,7 +50,7 @@ class _AdbSetupScreenState extends State<AdbSetupScreen> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: FileBeamTheme.textPrimary,
+                color: FileDroidTheme.textPrimary,
               ),
             ),
             const SizedBox(height: 12),
@@ -59,7 +59,7 @@ class _AdbSetupScreenState extends State<AdbSetupScreen> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
-                color: FileBeamTheme.textSecondary,
+                color: FileDroidTheme.textSecondary,
                 height: 1.5,
               ),
             ),
@@ -96,7 +96,7 @@ class _AdbSetupScreenState extends State<AdbSetupScreen> {
                 _browseError!,
                 style: const TextStyle(
                   fontSize: 13,
-                  color: FileBeamTheme.roseError,
+                  color: FileDroidTheme.roseError,
                 ),
               ),
             ],
@@ -110,7 +110,7 @@ class _AdbSetupScreenState extends State<AdbSetupScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                   decoration: BoxDecoration(
-                    gradient: FileBeamTheme.downloadGradient,
+                    gradient: FileDroidTheme.downloadGradient,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Text(
@@ -184,13 +184,13 @@ class _OptionCardState extends State<_OptionCard> {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: _hovering
-                ? FileBeamTheme.bgElevated
-                : FileBeamTheme.bgSurface,
+                ? FileDroidTheme.bgElevated
+                : FileDroidTheme.bgSurface,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: _hovering
-                  ? FileBeamTheme.accentIndigo.withValues(alpha: 0.3)
-                  : FileBeamTheme.borderSubtle,
+                  ? FileDroidTheme.accentIndigo.withValues(alpha: 0.3)
+                  : FileDroidTheme.borderSubtle,
               width: 1,
             ),
           ),
@@ -202,7 +202,7 @@ class _OptionCardState extends State<_OptionCard> {
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
-                  color: FileBeamTheme.textPrimary,
+                  color: FileDroidTheme.textPrimary,
                 ),
               ),
               const SizedBox(height: 6),
@@ -212,8 +212,8 @@ class _OptionCardState extends State<_OptionCard> {
                   fontSize: 13,
                   fontFamily: widget.isCode ? 'Menlo' : null,
                   color: widget.isCode
-                      ? FileBeamTheme.accentCyan
-                      : FileBeamTheme.accentCyan,
+                      ? FileDroidTheme.accentCyan
+                      : FileDroidTheme.accentCyan,
                 ),
               ),
             ],

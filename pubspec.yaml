@@ -1,4 +1,4 @@
-name: filebeam
+name: filedroid
 description: Android file transfer for macOS via ADB.
 publish_to: 'none'
 version: 1.0.0+1
@@ -13,9 +13,9 @@ dependencies:
   macos_ui: ^2.0.9
   provider: ^6.1.1
   path: ^1.9.0
-  intl: ^0.19.0
-  file_picker: ^8.0.0
-  desktop_drop: ^0.4.4
+  intl: ^0.20.2
+  file_picker: ^10.3.10
+  desktop_drop: ^0.7.0
   url_launcher: ^6.2.0
 
 dev_dependencies:

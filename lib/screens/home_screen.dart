@@ -43,16 +43,16 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: false,
         padding: const EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
-          color: FileBeamTheme.bgSurface.withValues(alpha: 0.9),
+          color: FileDroidTheme.bgSurface.withValues(alpha: 0.9),
         ),
         title: Row(
           children: [
-            // FileBeam logo in title bar, aligned left with sidebar
+            // FileDroid logo in title bar, aligned left with sidebar
             Container(
               width: 28,
               height: 28,
               decoration: BoxDecoration(
-                gradient: FileBeamTheme.uploadGradient,
+                gradient: FileDroidTheme.uploadGradient,
                 borderRadius: BorderRadius.circular(7),
               ),
               child: const Center(
@@ -65,18 +65,18 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'FileBeam',
+                  'FileDroid',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: FileBeamTheme.textPrimary,
+                    color: FileDroidTheme.textPrimary,
                   ),
                 ),
                 Text(
                   'Android Transfer',
                   style: TextStyle(
                     fontSize: 10,
-                    color: FileBeamTheme.textTertiary,
+                    color: FileDroidTheme.textTertiary,
                   ),
                 ),
               ],
@@ -96,12 +96,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 30,
                     decoration: BoxDecoration(
                       color: _showTransfers
-                          ? FileBeamTheme.accentIndigo
+                          ? FileDroidTheme.accentIndigo
                               .withValues(alpha: 0.15)
-                          : FileBeamTheme.bgElevated,
+                          : FileDroidTheme.bgElevated,
                       borderRadius: BorderRadius.circular(8),
                       border:
-                          Border.all(color: FileBeamTheme.borderLight),
+                          Border.all(color: FileDroidTheme.borderLight),
                     ),
                     child: Center(
                       child: Text(
@@ -110,8 +110,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: _showTransfers
-                              ? FileBeamTheme.accentCyan
-                              : FileBeamTheme.textSecondary,
+                              ? FileDroidTheme.accentCyan
+                              : FileDroidTheme.textSecondary,
                         ),
                       ),
                     ),
@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildBody(DeviceProvider deviceProv) {
     if (deviceProv.isLoading) {
       return Container(
-        color: FileBeamTheme.bgPrimary,
+        color: FileDroidTheme.bgPrimary,
         child: const Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -139,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 28,
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  color: FileBeamTheme.accentIndigo,
+                  color: FileDroidTheme.accentIndigo,
                 ),
               ),
               SizedBox(height: 16),
@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 'Initializing...',
                 style: TextStyle(
                   fontSize: 14,
-                  color: FileBeamTheme.textSecondary,
+                  color: FileDroidTheme.textSecondary,
                 ),
               ),
             ],
@@ -163,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Stack(
       children: [
         // Background
-        Container(color: FileBeamTheme.bgPrimary),
+        Container(color: FileDroidTheme.bgPrimary),
         // Ambient glow orbs
         ..._buildGlowOrbs(),
         // Main layout
@@ -172,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
             // Sidebar
             const DevicePanel(),
             // Divider
-            Container(width: 1, color: FileBeamTheme.borderSubtle),
+            Container(width: 1, color: FileDroidTheme.borderSubtle),
             // Content area
             Expanded(
               child: Column(
@@ -195,22 +195,22 @@ class _HomeScreenState extends State<HomeScreen> {
       Positioned(
         top: -100,
         left: -80,
-        child: _GlowOrb(color: FileBeamTheme.accentIndigo, size: 350),
+        child: _GlowOrb(color: FileDroidTheme.accentIndigo, size: 350),
       ),
       Positioned(
         bottom: -120,
         right: -60,
-        child: _GlowOrb(color: FileBeamTheme.accentCyan, size: 300),
+        child: _GlowOrb(color: FileDroidTheme.accentCyan, size: 300),
       ),
       Positioned(
         bottom: -80,
         left: -40,
-        child: _GlowOrb(color: FileBeamTheme.roseError, size: 250),
+        child: _GlowOrb(color: FileDroidTheme.roseError, size: 250),
       ),
       Positioned(
         top: -60,
         right: -100,
-        child: _GlowOrb(color: FileBeamTheme.purple, size: 280),
+        child: _GlowOrb(color: FileDroidTheme.purple, size: 280),
       ),
     ];
   }

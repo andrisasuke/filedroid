@@ -66,7 +66,7 @@ class _FileBrowserState extends State<FileBrowser> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: const BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: FileBeamTheme.borderSubtle),
+          bottom: BorderSide(color: FileDroidTheme.borderSubtle),
         ),
       ),
       child: Row(
@@ -114,7 +114,7 @@ class _FileBrowserState extends State<FileBrowser> {
           height: 24,
           child: CircularProgressIndicator(
             strokeWidth: 2,
-            color: FileBeamTheme.accentIndigo,
+            color: FileDroidTheme.accentIndigo,
           ),
         ),
       );
@@ -124,7 +124,7 @@ class _FileBrowserState extends State<FileBrowser> {
       return Center(
         child: Text(
           browser.error!,
-          style: const TextStyle(color: FileBeamTheme.roseError, fontSize: 14),
+          style: const TextStyle(color: FileDroidTheme.roseError, fontSize: 14),
         ),
       );
     }
@@ -159,9 +159,9 @@ class _FileBrowserState extends State<FileBrowser> {
       height: 28,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: const BoxDecoration(
-        color: FileBeamTheme.bgSurface,
+        color: FileDroidTheme.bgSurface,
         border: Border(
-          top: BorderSide(color: FileBeamTheme.borderSubtle),
+          top: BorderSide(color: FileDroidTheme.borderSubtle),
         ),
       ),
       child: Row(
@@ -170,7 +170,7 @@ class _FileBrowserState extends State<FileBrowser> {
             '${browser.files.length} items',
             style: const TextStyle(
               fontSize: 11,
-              color: FileBeamTheme.textTertiary,
+              color: FileDroidTheme.textTertiary,
             ),
           ),
           const Spacer(),
@@ -179,7 +179,7 @@ class _FileBrowserState extends State<FileBrowser> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               decoration: BoxDecoration(
-                color: FileBeamTheme.accentIndigo.withValues(alpha: 0.2),
+                color: FileDroidTheme.accentIndigo.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
@@ -187,7 +187,7 @@ class _FileBrowserState extends State<FileBrowser> {
                 style: const TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w500,
-                  color: FileBeamTheme.accentCyan,
+                  color: FileDroidTheme.accentCyan,
                 ),
               ),
             ),
@@ -197,7 +197,7 @@ class _FileBrowserState extends State<FileBrowser> {
             style: const TextStyle(
               fontSize: 11,
               fontFamily: 'Menlo',
-              color: FileBeamTheme.textTertiary,
+              color: FileDroidTheme.textTertiary,
             ),
           ),
         ],
@@ -207,7 +207,7 @@ class _FileBrowserState extends State<FileBrowser> {
 
   Widget _buildNoDeviceState() {
     return Container(
-      color: FileBeamTheme.bgPrimary,
+      color: FileDroidTheme.bgPrimary,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -216,7 +216,7 @@ class _FileBrowserState extends State<FileBrowser> {
               width: 72,
               height: 72,
               decoration: BoxDecoration(
-                color: FileBeamTheme.bgElevated,
+                color: FileDroidTheme.bgElevated,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: const Center(
@@ -224,7 +224,7 @@ class _FileBrowserState extends State<FileBrowser> {
                   '[ ]',
                   style: TextStyle(
                     fontSize: 24,
-                    color: FileBeamTheme.textTertiary,
+                    color: FileDroidTheme.textTertiary,
                   ),
                 ),
               ),
@@ -235,26 +235,26 @@ class _FileBrowserState extends State<FileBrowser> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: FileBeamTheme.textPrimary,
+                color: FileDroidTheme.textPrimary,
               ),
             ),
             const SizedBox(height: 16),
             const Text(
               '1. Enable USB Debugging on your phone',
               style: TextStyle(
-                  fontSize: 14, color: FileBeamTheme.textSecondary),
+                  fontSize: 14, color: FileDroidTheme.textSecondary),
             ),
             const SizedBox(height: 6),
             const Text(
               '2. Connect via USB cable',
               style: TextStyle(
-                  fontSize: 14, color: FileBeamTheme.textSecondary),
+                  fontSize: 14, color: FileDroidTheme.textSecondary),
             ),
             const SizedBox(height: 6),
             const Text(
               '3. Accept the connection prompt',
               style: TextStyle(
-                  fontSize: 14, color: FileBeamTheme.textSecondary),
+                  fontSize: 14, color: FileDroidTheme.textSecondary),
             ),
           ],
         ),
@@ -264,7 +264,7 @@ class _FileBrowserState extends State<FileBrowser> {
 
   Widget _buildUnauthorizedState() {
     return Container(
-      color: FileBeamTheme.bgPrimary,
+      color: FileDroidTheme.bgPrimary,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -273,10 +273,10 @@ class _FileBrowserState extends State<FileBrowser> {
               width: 72,
               height: 72,
               decoration: BoxDecoration(
-                color: FileBeamTheme.amberWarning.withValues(alpha: 0.1),
+                color: FileDroidTheme.amberWarning.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: FileBeamTheme.amberWarning.withValues(alpha: 0.3),
+                  color: FileDroidTheme.amberWarning.withValues(alpha: 0.3),
                 ),
               ),
               child: const Center(
@@ -285,7 +285,7 @@ class _FileBrowserState extends State<FileBrowser> {
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: FileBeamTheme.amberWarning,
+                    color: FileDroidTheme.amberWarning,
                   ),
                 ),
               ),
@@ -296,7 +296,7 @@ class _FileBrowserState extends State<FileBrowser> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: FileBeamTheme.textPrimary,
+                color: FileDroidTheme.textPrimary,
               ),
             ),
             const SizedBox(height: 12),
@@ -307,7 +307,7 @@ class _FileBrowserState extends State<FileBrowser> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
-                color: FileBeamTheme.textSecondary,
+                color: FileDroidTheme.textSecondary,
                 height: 1.5,
               ),
             ),
@@ -315,17 +315,17 @@ class _FileBrowserState extends State<FileBrowser> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: FileBeamTheme.amberWarning.withValues(alpha: 0.06),
+                color: FileDroidTheme.amberWarning.withValues(alpha: 0.06),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: FileBeamTheme.amberWarning.withValues(alpha: 0.15),
+                  color: FileDroidTheme.amberWarning.withValues(alpha: 0.15),
                 ),
               ),
               child: const Text(
                 'Tip: Check "Always allow from this\ncomputer" to skip this next time.',
                 style: TextStyle(
                   fontSize: 13,
-                  color: FileBeamTheme.textSecondary,
+                  color: FileDroidTheme.textSecondary,
                 ),
               ),
             ),
@@ -344,7 +344,7 @@ class _FileBrowserState extends State<FileBrowser> {
             width: 64,
             height: 64,
             decoration: BoxDecoration(
-              color: FileBeamTheme.bgElevated,
+              color: FileDroidTheme.bgElevated,
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Center(
@@ -352,7 +352,7 @@ class _FileBrowserState extends State<FileBrowser> {
                 '[ ]',
                 style: TextStyle(
                   fontSize: 20,
-                  color: FileBeamTheme.textTertiary,
+                  color: FileDroidTheme.textTertiary,
                 ),
               ),
             ),
@@ -363,7 +363,7 @@ class _FileBrowserState extends State<FileBrowser> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: FileBeamTheme.textSecondary,
+              color: FileDroidTheme.textSecondary,
             ),
           ),
           const SizedBox(height: 6),
@@ -371,7 +371,7 @@ class _FileBrowserState extends State<FileBrowser> {
             'Drag files here to upload',
             style: TextStyle(
               fontSize: 13,
-              color: FileBeamTheme.textTertiary,
+              color: FileDroidTheme.textTertiary,
             ),
           ),
         ],
@@ -390,8 +390,8 @@ class _FileBrowserState extends State<FileBrowser> {
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [
-                  FileBeamTheme.accentIndigo,
-                  FileBeamTheme.accentCyan,
+                  FileDroidTheme.accentIndigo,
+                  FileDroidTheme.accentCyan,
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -399,7 +399,7 @@ class _FileBrowserState extends State<FileBrowser> {
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: FileBeamTheme.accentIndigo.withValues(alpha: 0.4),
+                  color: FileDroidTheme.accentIndigo.withValues(alpha: 0.4),
                   blurRadius: 40,
                   spreadRadius: 10,
                 ),
@@ -474,8 +474,8 @@ class _SortHeader extends StatelessWidget {
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
                 color: isActive
-                    ? FileBeamTheme.textPrimary
-                    : FileBeamTheme.textTertiary,
+                    ? FileDroidTheme.textPrimary
+                    : FileDroidTheme.textTertiary,
               ),
             ),
             if (isActive)
@@ -484,7 +484,7 @@ class _SortHeader extends StatelessWidget {
                     ? Icons.arrow_upward
                     : Icons.arrow_downward,
                 size: 12,
-                color: FileBeamTheme.textPrimary,
+                color: FileDroidTheme.textPrimary,
               ),
           ],
         ),
@@ -562,10 +562,10 @@ class _FileRowState extends State<_FileRow>
               height: 36,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: widget.isSelected
-                  ? FileBeamTheme.selectionDecoration()
+                  ? FileDroidTheme.selectionDecoration()
                   : BoxDecoration(
                       color: _hovering
-                          ? FileBeamTheme.bgElevated.withValues(alpha: 0.4)
+                          ? FileDroidTheme.bgElevated.withValues(alpha: 0.4)
                           : Colors.transparent,
                     ),
               child: Row(
@@ -582,13 +582,13 @@ class _FileRowState extends State<_FileRow>
                               height: 18,
                               decoration: BoxDecoration(
                                 color: widget.isSelected
-                                    ? FileBeamTheme.accentIndigo
+                                    ? FileDroidTheme.accentIndigo
                                     : Colors.transparent,
                                 borderRadius: BorderRadius.circular(4),
                                 border: Border.all(
                                   color: widget.isSelected
-                                      ? FileBeamTheme.accentIndigo
-                                      : FileBeamTheme.textTertiary,
+                                      ? FileDroidTheme.accentIndigo
+                                      : FileDroidTheme.textTertiary,
                                   width: 1.5,
                                 ),
                               ),
@@ -633,7 +633,7 @@ class _FileRowState extends State<_FileRow>
                             TextSpan(
                               text: ' >',
                               style: TextStyle(
-                                color: FileBeamTheme.textTertiary,
+                                color: FileDroidTheme.textTertiary,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -645,7 +645,7 @@ class _FileRowState extends State<_FileRow>
                         fontWeight: widget.file.isDirectory
                             ? FontWeight.w600
                             : FontWeight.w400,
-                        color: FileBeamTheme.textPrimary,
+                        color: FileDroidTheme.textPrimary,
                       ),
                     ),
                   ),
@@ -657,7 +657,7 @@ class _FileRowState extends State<_FileRow>
                       textAlign: TextAlign.right,
                       style: const TextStyle(
                         fontSize: 12,
-                        color: FileBeamTheme.textSecondary,
+                        color: FileDroidTheme.textSecondary,
                         fontFamily: 'Menlo',
                       ),
                     ),
@@ -670,7 +670,7 @@ class _FileRowState extends State<_FileRow>
                       textAlign: TextAlign.right,
                       style: const TextStyle(
                         fontSize: 12,
-                        color: FileBeamTheme.textSecondary,
+                        color: FileDroidTheme.textSecondary,
                       ),
                     ),
                   ),

@@ -15,7 +15,7 @@ class DevicePanel extends StatelessWidget {
 
     return Container(
       width: 240,
-      color: FileBeamTheme.bgSurface,
+      color: FileDroidTheme.bgSurface,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -36,7 +36,7 @@ class DevicePanel extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               'QUICK ACCESS',
-              style: FileBeamTheme.sectionLabelStyle(),
+              style: FileDroidTheme.sectionLabelStyle(),
             ),
           ),
           const SizedBox(height: 8),
@@ -92,7 +92,7 @@ class DevicePanel extends StatelessWidget {
                   : '',
               style: const TextStyle(
                 fontSize: 11,
-                color: FileBeamTheme.textTertiary,
+                color: FileDroidTheme.textTertiary,
               ),
             ),
           ),
@@ -111,17 +111,17 @@ class DevicePanel extends StatelessWidget {
     String detail;
 
     if (!hasDevice) {
-      dotColor = FileBeamTheme.textTertiary;
+      dotColor = FileDroidTheme.textTertiary;
       title = '[phone]';
       subtitle = 'No Device Connected';
       detail = 'Connect via USB cable';
     } else if (device.isUnauthorized) {
-      dotColor = FileBeamTheme.amberWarning;
+      dotColor = FileDroidTheme.amberWarning;
       title = device.displayName;
       subtitle = 'Unauthorized';
       detail = 'Check phone for prompt';
     } else {
-      dotColor = FileBeamTheme.greenSuccess;
+      dotColor = FileDroidTheme.greenSuccess;
       title = device.displayName;
       final version =
           device.androidVersion != null ? 'Android ${device.androidVersion}' : '';
@@ -132,11 +132,11 @@ class DevicePanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: hasDevice && device.isOnline
-          ? FileBeamTheme.deviceCardDecoration()
+          ? FileDroidTheme.deviceCardDecoration()
           : BoxDecoration(
-              color: FileBeamTheme.bgElevated.withValues(alpha: 0.5),
+              color: FileDroidTheme.bgElevated.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: FileBeamTheme.borderSubtle),
+              border: Border.all(color: FileDroidTheme.borderSubtle),
             ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,8 +161,8 @@ class DevicePanel extends StatelessWidget {
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: hasDevice
-                        ? FileBeamTheme.textPrimary
-                        : FileBeamTheme.textTertiary,
+                        ? FileDroidTheme.textPrimary
+                        : FileDroidTheme.textTertiary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -171,8 +171,8 @@ class DevicePanel extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     color: device?.isUnauthorized == true
-                        ? FileBeamTheme.amberWarning
-                        : FileBeamTheme.textSecondary,
+                        ? FileDroidTheme.amberWarning
+                        : FileDroidTheme.textSecondary,
                   ),
                 ),
                 if (detail.isNotEmpty) ...[
@@ -182,7 +182,7 @@ class DevicePanel extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 10,
                       fontFamily: 'Menlo',
-                      color: FileBeamTheme.textTertiary,
+                      color: FileDroidTheme.textTertiary,
                     ),
                   ),
                 ],
@@ -205,13 +205,13 @@ class DevicePanel extends StatelessWidget {
             children: [
               Text(
                 'STORAGE',
-                style: FileBeamTheme.sectionLabelStyle(),
+                style: FileDroidTheme.sectionLabelStyle(),
               ),
               Text(
                 '${info.formattedUsed} / ${info.formattedTotal}',
                 style: const TextStyle(
                   fontSize: 11,
-                  color: FileBeamTheme.textSecondary,
+                  color: FileDroidTheme.textSecondary,
                 ),
               ),
             ],
@@ -226,7 +226,7 @@ class DevicePanel extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: FileBeamTheme.bgElevated,
+                      color: FileDroidTheme.bgElevated,
                       borderRadius: BorderRadius.circular(3),
                     ),
                   ),
@@ -234,7 +234,7 @@ class DevicePanel extends StatelessWidget {
                     widthFactor: info.usedPercentage,
                     child: Container(
                       decoration: BoxDecoration(
-                        gradient: FileBeamTheme.storageGradient,
+                        gradient: FileDroidTheme.storageGradient,
                         borderRadius: BorderRadius.circular(3),
                       ),
                     ),
@@ -248,7 +248,7 @@ class DevicePanel extends StatelessWidget {
             '${info.formattedAvailable} available',
             style: const TextStyle(
               fontSize: 11,
-              color: FileBeamTheme.textTertiary,
+              color: FileDroidTheme.textTertiary,
             ),
           ),
         ],
@@ -278,8 +278,8 @@ class _QuickAccessItemState extends State<_QuickAccessItem> {
   @override
   Widget build(BuildContext context) {
     final dotColor =
-        FileBeamTheme.quickAccessColors[widget.label] ??
-            FileBeamTheme.accentTeal;
+        FileDroidTheme.quickAccessColors[widget.label] ??
+            FileDroidTheme.accentTeal;
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -293,14 +293,14 @@ class _QuickAccessItemState extends State<_QuickAccessItem> {
               const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: widget.isActive
-                ? FileBeamTheme.accentIndigo.withValues(alpha: 0.12)
+                ? FileDroidTheme.accentIndigo.withValues(alpha: 0.12)
                 : _hovering
-                    ? FileBeamTheme.bgElevated.withValues(alpha: 0.5)
+                    ? FileDroidTheme.bgElevated.withValues(alpha: 0.5)
                     : Colors.transparent,
             border: Border(
               left: BorderSide(
                 color: widget.isActive
-                    ? FileBeamTheme.accentIndigo
+                    ? FileDroidTheme.accentIndigo
                     : Colors.transparent,
                 width: 3,
               ),
@@ -324,8 +324,8 @@ class _QuickAccessItemState extends State<_QuickAccessItem> {
                   fontWeight:
                       widget.isActive ? FontWeight.w600 : FontWeight.w400,
                   color: widget.isActive
-                      ? FileBeamTheme.textPrimary
-                      : FileBeamTheme.textSecondary,
+                      ? FileDroidTheme.textPrimary
+                      : FileDroidTheme.textSecondary,
                 ),
               ),
             ],

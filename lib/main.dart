@@ -9,11 +9,11 @@ import 'services/adb_service.dart';
 import 'utils/theme.dart';
 
 void main() {
-  runApp(const FileBeamApp());
+  runApp(const FileDroidApp());
 }
 
-class FileBeamApp extends StatelessWidget {
-  const FileBeamApp({super.key});
+class FileDroidApp extends StatelessWidget {
+  const FileDroidApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +28,9 @@ class FileBeamApp extends StatelessWidget {
             create: (_) => TransferProvider(adbService)),
       ],
       child: MacosApp(
-        title: 'FileBeam',
-        theme: FileBeamTheme.macosTheme(),
-        darkTheme: FileBeamTheme.macosTheme(),
+        title: 'FileDroid',
+        theme: FileDroidTheme.macosTheme(),
+        darkTheme: FileDroidTheme.macosTheme(),
         themeMode: ThemeMode.dark,
         debugShowCheckedModeBanner: false,
         home: const HomeScreen(),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:macos_ui/macos_ui.dart';
 
-class FileBeamTheme {
+class FileDroidTheme {
   // Primary accents
   static const accentIndigo = Color(0xFF6366F1);
   static const accentCyan = Color(0xFF06B6D4);
@@ -19,7 +19,7 @@ class FileBeamTheme {
   static const bgElevated = Color(0xFF1A1C2A);
 
   // Text
-  const FileBeamTheme._();
+  const FileDroidTheme._();
   static const textPrimary = Color(0xFFE2E8F0);
   static const textSecondary = Color.fromRGBO(255, 255, 255, 0.5);
   static const textTertiary = Color.fromRGBO(255, 255, 255, 0.3);
