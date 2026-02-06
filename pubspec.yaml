@@ -1,0 +1,27 @@
+name: filebeam
+description: Android file transfer for macOS via ADB.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  macos_ui: ^2.0.9
+  provider: ^6.1.1
+  path: ^1.9.0
+  intl: ^0.19.0
+  file_picker: ^8.0.0
+  desktop_drop: ^0.4.4
+  url_launcher: ^6.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
