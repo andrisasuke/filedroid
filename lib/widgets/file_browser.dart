@@ -133,24 +133,33 @@ class _FileBrowserState extends State<FileBrowser> {
       return _buildEmptyState();
     }
 
-    return ListView.builder(
-      itemCount: browser.files.length,
-      itemBuilder: (context, index) {
-        final file = browser.files[index];
-        return _FileRow(
-          file: file,
-          isSelected: browser.selectedPaths.contains(file.path),
-          animationDelay: index,
-          onTap: () {
-            if (file.isDirectory) {
-              browser.navigateTo(file.path);
-            } else {
-              browser.toggleSelection(file);
-            }
-          },
-          onSelect: () => browser.toggleSelection(file),
-        );
+    return GestureDetector(
+      onSecondaryTapUp: (details) {
+        _showEmptyAreaMenu(context, details.globalPosition, browser);
       },
+      behavior: HitTestBehavior.translucent,
+      child: ListView.builder(
+        itemCount: browser.files.length,
+        itemBuilder: (context, index) {
+          final file = browser.files[index];
+          return _FileRow(
+            file: file,
+            isSelected: browser.selectedPaths.contains(file.path),
+            animationDelay: index,
+            onTap: () {
+              if (file.isDirectory) {
+                browser.navigateTo(file.path);
+              } else {
+                browser.toggleSelection(file);
+              }
+            },
+            onSelect: () => browser.toggleSelection(file),
+            onSecondaryTap: (position) {
+              _showFileMenu(context, position, file, browser);
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -379,6 +388,215 @@ class _FileBrowserState extends State<FileBrowser> {
     );
   }
 
+  Future<void> _showFileMenu(BuildContext context, Offset position,
+      AndroidFile file, FileBrowserProvider browser) async {
+    final value = await showMenu<String>(
+      context: context,
+      position: RelativeRect.fromLTRB(
+          position.dx, position.dy, position.dx, position.dy),
+      color: FileDroidTheme.bgElevated,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      items: [
+        const PopupMenuItem(value: 'rename', child: Text('Rename')),
+        const PopupMenuItem(value: 'delete', child: Text('Delete')),
+        const PopupMenuDivider(),
+        const PopupMenuItem(value: 'new_folder', child: Text('New Folder')),
+      ],
+    );
+    if (!mounted || value == null) return;
+    _handleMenuAction(value, file);
+  }
+
+  Future<void> _showEmptyAreaMenu(BuildContext context, Offset position,
+      FileBrowserProvider browser) async {
+    final value = await showMenu<String>(
+      context: context,
+      position: RelativeRect.fromLTRB(
+          position.dx, position.dy, position.dx, position.dy),
+      color: FileDroidTheme.bgElevated,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      items: [
+        const PopupMenuItem(value: 'new_folder', child: Text('New Folder')),
+      ],
+    );
+    if (!mounted || value == null) return;
+    _handleMenuAction(value, null);
+  }
+
+  void _handleMenuAction(String action, AndroidFile? file) {
+    final browser = context.read<FileBrowserProvider>();
+    if (action == 'rename' && file != null) {
+      _showRenameDialog(context, file, browser);
+    } else if (action == 'delete' && file != null) {
+      _showDeleteDialog(context, [file], browser);
+    } else if (action == 'new_folder') {
+      _showNewFolderDialog(context, browser);
+    }
+  }
+
+  void _showNewFolderDialog(BuildContext context, FileBrowserProvider browser) {
+    final controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: FileDroidTheme.bgElevated,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: const Text('New Folder',
+            style: TextStyle(color: FileDroidTheme.textPrimary)),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          style: const TextStyle(color: FileDroidTheme.textPrimary),
+          decoration: InputDecoration(
+            hintText: 'Folder name',
+            hintStyle: const TextStyle(color: FileDroidTheme.textTertiary),
+            filled: true,
+            fillColor: FileDroidTheme.bgSurface,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: FileDroidTheme.borderSubtle),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: FileDroidTheme.borderSubtle),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: FileDroidTheme.accentIndigo),
+            ),
+          ),
+          onSubmitted: (value) {
+            if (value.trim().isNotEmpty) {
+              browser.createFolder(value.trim());
+              Navigator.of(ctx).pop();
+            }
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel',
+                style: TextStyle(color: FileDroidTheme.textSecondary)),
+          ),
+          TextButton(
+            onPressed: () {
+              final name = controller.text.trim();
+              if (name.isNotEmpty) {
+                browser.createFolder(name);
+                Navigator.of(ctx).pop();
+              }
+            },
+            child: const Text('Create',
+                style: TextStyle(color: FileDroidTheme.accentCyan)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showRenameDialog(BuildContext context, AndroidFile file,
+      FileBrowserProvider browser) {
+    final controller = TextEditingController(text: file.name);
+    controller.selection = TextSelection(
+      baseOffset: 0,
+      extentOffset: file.isDirectory
+          ? file.name.length
+          : file.name.lastIndexOf('.') > 0
+              ? file.name.lastIndexOf('.')
+              : file.name.length,
+    );
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: FileDroidTheme.bgElevated,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: Text('Rename ${file.isDirectory ? 'Folder' : 'File'}',
+            style: const TextStyle(color: FileDroidTheme.textPrimary)),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          style: const TextStyle(color: FileDroidTheme.textPrimary),
+          decoration: InputDecoration(
+            hintText: 'New name',
+            hintStyle: const TextStyle(color: FileDroidTheme.textTertiary),
+            filled: true,
+            fillColor: FileDroidTheme.bgSurface,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: FileDroidTheme.borderSubtle),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: FileDroidTheme.borderSubtle),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: FileDroidTheme.accentIndigo),
+            ),
+          ),
+          onSubmitted: (value) {
+            if (value.trim().isNotEmpty && value.trim() != file.name) {
+              browser.renameItem(file, value.trim());
+              Navigator.of(ctx).pop();
+            }
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel',
+                style: TextStyle(color: FileDroidTheme.textSecondary)),
+          ),
+          TextButton(
+            onPressed: () {
+              final newName = controller.text.trim();
+              if (newName.isNotEmpty && newName != file.name) {
+                browser.renameItem(file, newName);
+                Navigator.of(ctx).pop();
+              }
+            },
+            child: const Text('Rename',
+                style: TextStyle(color: FileDroidTheme.accentCyan)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteDialog(BuildContext context, List<AndroidFile> items,
+      FileBrowserProvider browser) {
+    final count = items.length;
+    final label = count == 1 ? '"${items.first.name}"' : '$count items';
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: FileDroidTheme.bgElevated,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: const Text('Delete',
+            style: TextStyle(color: FileDroidTheme.textPrimary)),
+        content: Text(
+          'Are you sure you want to delete $label? This cannot be undone.',
+          style: const TextStyle(color: FileDroidTheme.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel',
+                style: TextStyle(color: FileDroidTheme.textSecondary)),
+          ),
+          TextButton(
+            onPressed: () {
+              browser.deleteItems(items);
+              Navigator.of(ctx).pop();
+            },
+            child: const Text('Delete',
+                style: TextStyle(color: FileDroidTheme.roseError)),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildDropOverlay(FileBrowserProvider browser) {
     return Positioned.fill(
       child: Container(
@@ -499,6 +717,7 @@ class _FileRow extends StatefulWidget {
   final int animationDelay;
   final VoidCallback onTap;
   final VoidCallback onSelect;
+  final void Function(Offset position) onSecondaryTap;
 
   const _FileRow({
     required this.file,
@@ -506,6 +725,7 @@ class _FileRow extends StatefulWidget {
     required this.animationDelay,
     required this.onTap,
     required this.onSelect,
+    required this.onSecondaryTap,
   });
 
   @override
@@ -557,6 +777,8 @@ class _FileRowState extends State<_FileRow>
           onExit: (_) => setState(() => _hovering = false),
           child: GestureDetector(
             onTap: widget.onTap,
+            onSecondaryTapUp: (details) =>
+                widget.onSecondaryTap(details.globalPosition),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 150),
               height: 36,

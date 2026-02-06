@@ -572,6 +572,11 @@ class AdbService {
     return result.exitCode == 0;
   }
 
+  Future<bool> rename(String oldPath, String newPath) async {
+    final result = await _run(['shell', 'mv', oldPath, newPath]);
+    return result.exitCode == 0;
+  }
+
   Future<bool> exists(String path) async {
     final result = await _run(['shell', 'test', '-e', path]);
     return result.exitCode == 0;

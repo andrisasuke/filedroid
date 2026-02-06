@@ -225,6 +225,30 @@ class FileBrowserProvider extends ChangeNotifier {
     _files = filtered;
   }
 
+  Future<bool> createFolder(String name) async {
+    final path = _currentPath == '/' ? '/$name' : '$_currentPath/$name';
+    final ok = await _adb.createDirectory(path);
+    if (ok) await refresh();
+    return ok;
+  }
+
+  Future<bool> renameItem(AndroidFile file, String newName) async {
+    final parentIdx = file.path.lastIndexOf('/');
+    final parent = parentIdx <= 0 ? '/' : file.path.substring(0, parentIdx);
+    final newPath = parent == '/' ? '/$newName' : '$parent/$newName';
+    final ok = await _adb.rename(file.path, newPath);
+    if (ok) await refresh();
+    return ok;
+  }
+
+  Future<void> deleteItems(List<AndroidFile> items) async {
+    for (final item in items) {
+      await _adb.delete(item.path, recursive: item.isDirectory);
+    }
+    _selectedPaths.clear();
+    await refresh();
+  }
+
   // Quick navigation
   Future<void> goToSdcard() => navigateTo('/sdcard');
   Future<void> goToDownloads() => navigateTo('/sdcard/Download');

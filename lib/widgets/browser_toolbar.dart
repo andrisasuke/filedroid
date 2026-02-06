@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
+import '../providers/device_provider.dart';
 import '../providers/file_browser_provider.dart';
 import '../providers/transfer_provider.dart';
 import '../utils/theme.dart';
@@ -10,8 +11,10 @@ class BrowserToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceProv = context.watch<DeviceProvider>();
     final browser = context.watch<FileBrowserProvider>();
     final transfer = context.read<TransferProvider>();
+    final hasDevice = deviceProv.hasDevice && deviceProv.activeDevice?.isOnline == true;
 
     return Container(
       height: 52,
@@ -30,21 +33,21 @@ class BrowserToolbar extends StatelessWidget {
           _NavButton(
             icon: Icons.chevron_left,
             tooltip: 'Go Back',
-            enabled: browser.canGoBack,
+            enabled: hasDevice && browser.canGoBack,
             onTap: browser.goBack,
           ),
           const SizedBox(width: 4),
           _NavButton(
             icon: Icons.chevron_right,
             tooltip: 'Go Forward',
-            enabled: browser.canGoForward,
+            enabled: hasDevice && browser.canGoForward,
             onTap: browser.goForward,
           ),
           const SizedBox(width: 4),
           _NavButton(
             icon: Icons.arrow_upward,
             tooltip: 'Go Up',
-            enabled: !browser.isAtRoot,
+            enabled: hasDevice && !browser.isAtRoot,
             onTap: browser.navigateUp,
           ),
           const SizedBox(width: 8),
@@ -61,25 +64,49 @@ class BrowserToolbar extends StatelessWidget {
           const SizedBox(width: 8),
           // Refresh button
           _ToolButton(
-            label: 'R',
+            icon: Icons.refresh,
             tooltip: 'Refresh',
+            enabled: hasDevice,
             onTap: () => browser.refresh(),
           ),
           const SizedBox(width: 4),
           // Toggle hidden
           _ToolButton(
-            label: 'E',
+            icon: browser.showHidden ? Icons.visibility : Icons.visibility_off,
             tooltip: browser.showHidden ? 'Hide Hidden Files' : 'Show Hidden Files',
             isActive: browser.showHidden,
+            enabled: hasDevice,
             onTap: () => browser.toggleHidden(),
+          ),
+          const SizedBox(width: 4),
+          // New Folder button
+          _ToolButton(
+            icon: Icons.create_new_folder_outlined,
+            tooltip: 'New Folder',
+            enabled: hasDevice,
+            onTap: () => _showNewFolderDialog(context, browser),
+          ),
+          const SizedBox(width: 4),
+          // Delete button
+          _ToolButton(
+            icon: Icons.delete_outline,
+            tooltip: browser.hasSelection
+                ? 'Delete ${browser.selectionCount} selected'
+                : 'Select items to delete',
+            isActive: browser.hasSelection,
+            enabled: hasDevice && browser.hasSelection,
+            onTap: () => _showDeleteDialog(context, browser),
           ),
           const SizedBox(width: 8),
           // Upload button
           _GradientButton(
             label: '\u2303 Upload',
             tooltip: 'Upload files to device',
-            gradient: FileDroidTheme.uploadGradient,
-            onTap: () => _handleUpload(context, browser, transfer),
+            gradient: hasDevice ? FileDroidTheme.uploadGradient : null,
+            enabled: hasDevice,
+            onTap: hasDevice
+                ? () => _handleUpload(context, browser, transfer)
+                : null,
           ),
           const SizedBox(width: 6),
           // Download button
@@ -90,11 +117,11 @@ class BrowserToolbar extends StatelessWidget {
             tooltip: browser.hasSelection
                 ? 'Download ${browser.selectionCount} selected files'
                 : 'Select files to download',
-            gradient: browser.hasSelection
+            gradient: hasDevice && browser.hasSelection
                 ? FileDroidTheme.downloadGradient
                 : null,
-            enabled: browser.hasSelection,
-            onTap: browser.hasSelection
+            enabled: hasDevice && browser.hasSelection,
+            onTap: hasDevice && browser.hasSelection
                 ? () => _handleDownload(context, browser, transfer)
                 : null,
           ),
@@ -127,6 +154,103 @@ class BrowserToolbar extends StatelessWidget {
       transfer.pullFiles(remotePaths, dir);
       browser.deselectAll();
     }
+  }
+
+  void _showNewFolderDialog(
+      BuildContext context, FileBrowserProvider browser) {
+    final controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: FileDroidTheme.bgElevated,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: const Text('New Folder',
+            style: TextStyle(color: FileDroidTheme.textPrimary)),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          style: const TextStyle(color: FileDroidTheme.textPrimary),
+          decoration: InputDecoration(
+            hintText: 'Folder name',
+            hintStyle: const TextStyle(color: FileDroidTheme.textTertiary),
+            filled: true,
+            fillColor: FileDroidTheme.bgSurface,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: FileDroidTheme.borderSubtle),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: FileDroidTheme.borderSubtle),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: FileDroidTheme.accentIndigo),
+            ),
+          ),
+          onSubmitted: (value) {
+            if (value.trim().isNotEmpty) {
+              browser.createFolder(value.trim());
+              Navigator.of(ctx).pop();
+            }
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel',
+                style: TextStyle(color: FileDroidTheme.textSecondary)),
+          ),
+          TextButton(
+            onPressed: () {
+              final name = controller.text.trim();
+              if (name.isNotEmpty) {
+                browser.createFolder(name);
+                Navigator.of(ctx).pop();
+              }
+            },
+            child: const Text('Create',
+                style: TextStyle(color: FileDroidTheme.accentCyan)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteDialog(
+      BuildContext context, FileBrowserProvider browser) {
+    final items = browser.selectedFiles;
+    if (items.isEmpty) return;
+    final count = items.length;
+    final label = count == 1 ? '"${items.first.name}"' : '$count items';
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: FileDroidTheme.bgElevated,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: const Text('Delete',
+            style: TextStyle(color: FileDroidTheme.textPrimary)),
+        content: Text(
+          'Are you sure you want to delete $label? This cannot be undone.',
+          style: const TextStyle(color: FileDroidTheme.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel',
+                style: TextStyle(color: FileDroidTheme.textSecondary)),
+          ),
+          TextButton(
+            onPressed: () {
+              browser.deleteItems(items);
+              Navigator.of(ctx).pop();
+            },
+            child: const Text('Delete',
+                style: TextStyle(color: FileDroidTheme.roseError)),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -193,15 +317,17 @@ class _NavButtonState extends State<_NavButton> {
 }
 
 class _ToolButton extends StatefulWidget {
-  final String label;
+  final IconData icon;
   final String tooltip;
   final bool isActive;
+  final bool enabled;
   final VoidCallback onTap;
 
   const _ToolButton({
-    required this.label,
+    required this.icon,
     required this.tooltip,
     this.isActive = false,
+    this.enabled = true,
     required this.onTap,
   });
 
@@ -218,35 +344,38 @@ class _ToolButtonState extends State<_ToolButton> {
       message: widget.tooltip,
       waitDuration: const Duration(milliseconds: 500),
       child: MouseRegion(
-        cursor: SystemMouseCursors.click,
+        cursor: widget.enabled
+            ? SystemMouseCursors.click
+            : SystemMouseCursors.basic,
         onEnter: (_) => setState(() => _hovering = true),
         onExit: (_) => setState(() => _hovering = false),
         child: GestureDetector(
-          onTap: widget.onTap,
+          onTap: widget.enabled ? widget.onTap : null,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 150),
             width: 32,
             height: 32,
             decoration: BoxDecoration(
-              color: widget.isActive
+              color: widget.isActive && widget.enabled
                   ? FileDroidTheme.accentIndigo.withValues(alpha: 0.15)
-                  : _hovering
+                  : _hovering && widget.enabled
                       ? FileDroidTheme.bgElevated
                       : Colors.transparent,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: FileDroidTheme.borderLight),
+              border: Border.all(
+                color: widget.enabled
+                    ? FileDroidTheme.borderLight
+                    : FileDroidTheme.borderSubtle,
+              ),
             ),
-            child: Center(
-              child: Text(
-                widget.label,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: widget.isActive
+            child: Icon(
+              widget.icon,
+              size: 16,
+              color: !widget.enabled
+                  ? FileDroidTheme.textTertiary
+                  : widget.isActive
                       ? FileDroidTheme.accentCyan
                       : FileDroidTheme.textSecondary,
-                ),
-              ),
             ),
           ),
         ),
