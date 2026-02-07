@@ -38,17 +38,22 @@ jobs:
     strategy:
       matrix:
         include:
-          - runner: macos-latest
-            arch: arm64
-          - runner: macos-13
-            arch: x86_64
-    runs-on: ${{ matrix.runner }}
+          - arch: arm64
+            flutter_arch: arm64
+          - arch: x86_64
+            flutter_arch: x64
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install Rosetta (x86_64 only)
+        if: matrix.arch == 'x86_64'
+        run: softwareupdate --install-rosetta --agree-to-license || true
 
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          architecture: ${{ matrix.flutter_arch }}
 
       - name: Install dependencies
         run: flutter pub get
@@ -61,8 +66,9 @@ jobs:
 
       - name: Create DMG
         run: |
+          VERSION="${{ needs.check-version.outputs.version }}"
           APP_PATH="build/macos/Build/Products/Release/filedroid.app"
-          DMG_NAME="FileDroid-${{ needs.check-version.outputs.version }}-macOS-${{ matrix.arch }}.dmg"
+          DMG_NAME="FileDroid-${VERSION}-macOS-${{ matrix.arch }}.dmg"
 
           mkdir -p dmg_contents
           cp -R "$APP_PATH" dmg_contents/
@@ -75,7 +81,8 @@ jobs:
 
       - name: Create ZIP
         run: |
-          ZIP_NAME="FileDroid-${{ needs.check-version.outputs.version }}-macOS-${{ matrix.arch }}.zip"
+          VERSION="${{ needs.check-version.outputs.version }}"
+          ZIP_NAME="FileDroid-${VERSION}-macOS-${{ matrix.arch }}.zip"
           cd build/macos/Build/Products/Release
           zip -r -y "../../../../../$ZIP_NAME" filedroid.app
 
