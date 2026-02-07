@@ -21,16 +21,34 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _showTransfers = true;
+  bool _hasLoadedBrowser = false;
+  DeviceProvider? _deviceProv;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<DeviceProvider>().initialize();
+      _deviceProv = context.read<DeviceProvider>();
+      _deviceProv!.initialize();
+      _deviceProv!.addListener(_onDeviceChanged);
       context.read<TransferProvider>().onTransferComplete = () {
         context.read<FileBrowserProvider>().refresh();
       };
     });
+  }
+
+  void _onDeviceChanged() {
+    if (_hasLoadedBrowser) return;
+    if (_deviceProv?.hasDevice == true) {
+      _hasLoadedBrowser = true;
+      context.read<FileBrowserProvider>().navigateTo('/sdcard');
+    }
+  }
+
+  @override
+  void dispose() {
+    _deviceProv?.removeListener(_onDeviceChanged);
+    super.dispose();
   }
 
   @override

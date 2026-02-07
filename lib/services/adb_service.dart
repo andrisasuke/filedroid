@@ -285,7 +285,9 @@ class AdbService {
   }
 
   Future<List<AndroidFile>> listFiles(String dirPath) async {
-    final result = await _run(['shell', 'ls', '-la', dirPath]);
+    // Append trailing '/' to follow symlinks (e.g. /sdcard -> /storage/emulated/0)
+    final listPath = dirPath == '/' ? '/' : '$dirPath/';
+    final result = await _run(['shell', 'ls', '-la', listPath]);
 
     if (result.exitCode != 0) {
       final stderr = (result.stderr as String).toLowerCase();

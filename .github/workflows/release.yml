@@ -1,0 +1,145 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.check.outputs.should_release }}
+      version: ${{ steps.check.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get current version
+        id: check
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //' | sed 's/+.*//')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+          # Check if a release with this version already exists
+          if gh release view "v$VERSION" > /dev/null 2>&1; then
+            echo "Release v$VERSION already exists, skipping."
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "New version v$VERSION detected."
+            echo "should_release=true" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build:
+    needs: check-version
+    if: needs.check-version.outputs.should_release == 'true'
+    strategy:
+      matrix:
+        include:
+          - runner: macos-latest
+            arch: arm64
+          - runner: macos-13
+            arch: x86_64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Build macOS app
+        run: flutter build macos --release
+
+      - name: Create DMG
+        run: |
+          APP_PATH="build/macos/Build/Products/Release/filedroid.app"
+          DMG_NAME="FileDroid-${{ needs.check-version.outputs.version }}-macOS-${{ matrix.arch }}.dmg"
+
+          mkdir -p dmg_contents
+          cp -R "$APP_PATH" dmg_contents/
+          ln -s /Applications dmg_contents/Applications
+
+          hdiutil create -volname "FileDroid" \
+            -srcfolder dmg_contents \
+            -ov -format UDZO \
+            "$DMG_NAME"
+
+      - name: Create ZIP
+        run: |
+          ZIP_NAME="FileDroid-${{ needs.check-version.outputs.version }}-macOS-${{ matrix.arch }}.zip"
+          cd build/macos/Build/Products/Release
+          zip -r -y "../../../../../$ZIP_NAME" filedroid.app
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.arch }}
+          path: |
+            FileDroid-*.dmg
+            FileDroid-*.zip
+
+  release:
+    needs: [check-version, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Generate release notes
+        run: |
+          VERSION="${{ needs.check-version.outputs.version }}"
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            COMMITS=$(git log --oneline --no-decorate)
+          else
+            COMMITS=$(git log --oneline --no-decorate "$LAST_TAG"..HEAD)
+          fi
+
+          cat <<EOF > release_notes.md
+          ## What's New
+
+          $COMMITS
+
+          ## Download
+
+          | File | Architecture |
+          |---|---|
+          | \`FileDroid-${VERSION}-macOS-arm64.dmg\` | Apple Silicon (M1/M2/M3/M4) |
+          | \`FileDroid-${VERSION}-macOS-x86_64.dmg\` | Intel |
+
+          ## Install
+
+          1. Download the DMG for your Mac
+          2. Open and drag **FileDroid** to Applications
+          3. Connect your Android device via USB
+
+          > Requires ADB (\`brew install android-platform-tools\`) and USB Debugging enabled on your device.
+          EOF
+
+      - name: Create GitHub Release
+        run: |
+          VERSION="${{ needs.check-version.outputs.version }}"
+          gh release create "v$VERSION" \
+            --title "FileDroid v$VERSION" \
+            --notes-file release_notes.md \
+            artifacts/*
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

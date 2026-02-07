@@ -397,10 +397,22 @@ class _FileBrowserState extends State<FileBrowser> {
       color: FileDroidTheme.bgElevated,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       items: [
-        const PopupMenuItem(value: 'rename', child: Text('Rename')),
-        const PopupMenuItem(value: 'delete', child: Text('Delete')),
+        const PopupMenuItem(
+          value: 'rename',
+          child: Text('Rename',
+              style: TextStyle(color: FileDroidTheme.textPrimary)),
+        ),
+        const PopupMenuItem(
+          value: 'delete',
+          child: Text('Delete',
+              style: TextStyle(color: FileDroidTheme.roseError)),
+        ),
         const PopupMenuDivider(),
-        const PopupMenuItem(value: 'new_folder', child: Text('New Folder')),
+        const PopupMenuItem(
+          value: 'new_folder',
+          child: Text('New Folder',
+              style: TextStyle(color: FileDroidTheme.textPrimary)),
+        ),
       ],
     );
     if (!mounted || value == null) return;
@@ -416,7 +428,11 @@ class _FileBrowserState extends State<FileBrowser> {
       color: FileDroidTheme.bgElevated,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       items: [
-        const PopupMenuItem(value: 'new_folder', child: Text('New Folder')),
+        const PopupMenuItem(
+          value: 'new_folder',
+          child: Text('New Folder',
+              style: TextStyle(color: FileDroidTheme.textPrimary)),
+        ),
       ],
     );
     if (!mounted || value == null) return;
