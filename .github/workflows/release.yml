@@ -67,7 +67,7 @@ jobs:
       - name: Create DMG
         run: |
           VERSION="${{ needs.check-version.outputs.version }}"
-          APP_PATH="build/macos/Build/Products/Release/filedroid.app"
+          APP_PATH="build/macos/Build/Products/Release/FileDroid.app"
           DMG_NAME="FileDroid-${VERSION}-macOS-${{ matrix.arch }}.dmg"
 
           mkdir -p dmg_contents
@@ -84,7 +84,7 @@ jobs:
           VERSION="${{ needs.check-version.outputs.version }}"
           ZIP_NAME="FileDroid-${VERSION}-macOS-${{ matrix.arch }}.zip"
           cd build/macos/Build/Products/Release
-          zip -r -y "../../../../../$ZIP_NAME" filedroid.app
+          zip -r -y "../../../../../$ZIP_NAME" FileDroid.app
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -138,7 +138,7 @@ jobs:
           2. Open and drag **FileDroid** to Applications
           3. Remove Gatekeeper quarantine (app is not code-signed):
              \`\`\`bash
-             xattr -cr /Applications/filedroid.app
+             xattr -cr /Applications/FileDroid.app
              \`\`\`
           4. Connect your Android device via USB
 

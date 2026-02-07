@@ -54,7 +54,7 @@ Grab the latest release from the [**Releases page**](https://github.com/andrisas
 
 > **macOS Gatekeeper:** Since the app is not code-signed, macOS will block it on first launch. After dragging to Applications, run:
 > ```bash
-> xattr -cr /Applications/filedroid.app
+> xattr -cr /Applications/FileDroid.app
 > ```
 > Or right-click the app → **Open** → click **Open** again.
 
@@ -86,7 +86,7 @@ flutter pub get
 # Build the macOS app
 flutter build macos
 
-# The app is at: build/macos/Build/Products/Release/filedroid.app
+# The app is at: build/macos/Build/Products/Release/FileDroid.app
 ```
 
 ### Run in Development
