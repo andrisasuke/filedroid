@@ -52,6 +52,12 @@ Grab the latest release from the [**Releases page**](https://github.com/andrisas
 | `FileDroid-x.x.x-macOS-arm64.dmg` | Apple Silicon (M1/M2/M3/M4) |
 | `FileDroid-x.x.x-macOS-x86_64.dmg` | Intel |
 
+> **macOS Gatekeeper:** Since the app is not code-signed, macOS will block it on first launch. After dragging to Applications, run:
+> ```bash
+> xattr -cr /Applications/filedroid.app
+> ```
+> Or right-click the app → **Open** → click **Open** again.
+
 ## Getting Started
 
 ### Prerequisites

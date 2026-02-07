@@ -136,7 +136,11 @@ jobs:
 
           1. Download the DMG for your Mac
           2. Open and drag **FileDroid** to Applications
-          3. Connect your Android device via USB
+          3. Remove Gatekeeper quarantine (app is not code-signed):
+             \`\`\`bash
+             xattr -cr /Applications/filedroid.app
+             \`\`\`
+          4. Connect your Android device via USB
 
           > Requires ADB (\`brew install android-platform-tools\`) and USB Debugging enabled on your device.
           EOF
