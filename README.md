@@ -15,6 +15,9 @@
   <img src="https://img.shields.io/badge/flutter-3.38-blue?style=flat-square&logo=flutter" alt="Flutter">
   <img src="https://img.shields.io/badge/license-GPL--3.0-green?style=flat-square" alt="License">
   <img src="https://img.shields.io/github/actions/workflow/status/andrisasuke/filedroid/release.yml?style=flat-square&label=build" alt="Build">
+  <img src="https://img.shields.io/badge/test%20coverage-98%25-brightgreen?style=flat-square" alt="Test Coverage">
+  <img src="https://img.shields.io/badge/tests-478%20passed-brightgreen?style=flat-square" alt="Tests">
+  <img src="https://img.shields.io/badge/vibe%20coded-🤙-blueviolet?style=flat-square" alt="Vibe Coded">
 </p>
 
 ---

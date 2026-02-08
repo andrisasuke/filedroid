@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import '../models/android_device.dart';
 import '../models/android_file.dart';
+import 'process_runner.dart';
 
 class AdbException implements Exception {
   final String message;
@@ -52,9 +53,14 @@ class StorageInfo {
 }
 
 class AdbService {
+  final ProcessRunner _runner;
   String? _adbPath;
   String? _activeDeviceId;
   Process? _currentTransferProcess;
+
+  AdbService({ProcessRunner? runner, String? adbPath})
+      : _runner = runner ?? const RealProcessRunner(),
+        _adbPath = adbPath;
 
   String? get activeDeviceId => _activeDeviceId;
 
@@ -74,7 +80,7 @@ class AdbService {
 
     // Verify it's actually adb
     try {
-      final result = await Process.run(path, ['version']);
+      final result = await _runner.run(path, ['version']);
       if (result.exitCode != 0) return false;
     } catch (_) {
       return false;
@@ -115,7 +121,7 @@ class AdbService {
     // 1. Try 'which adb' via login shell (picks up user's PATH from .zshrc/.bashrc)
     for (final shell in ['/bin/zsh', '/bin/bash']) {
       try {
-        final result = await Process.run(shell, ['-l', '-c', 'which adb']);
+        final result = await _runner.run(shell, ['-l', '-c', 'which adb']);
         if (result.exitCode == 0) {
           final path = (result.stdout as String).trim();
           if (path.isNotEmpty && await File(path).exists()) {
@@ -146,7 +152,7 @@ class AdbService {
 
     // 4. Try reading ANDROID_HOME from login shell env
     try {
-      final result = await Process.run(
+      final result = await _runner.run(
         '/bin/zsh', ['-l', '-c', 'echo \$ANDROID_HOME'],
       );
       if (result.exitCode == 0) {
@@ -179,7 +185,7 @@ class AdbService {
     fullArgs.addAll(args);
 
     try {
-      return await Process.run(
+      return await _runner.run(
         adb,
         fullArgs,
         stdoutEncoding: utf8,
@@ -200,14 +206,14 @@ class AdbService {
     }
     fullArgs.addAll(args);
 
-    return Process.start(adb, fullArgs);
+    return _runner.start(adb, fullArgs);
   }
 
   Future<bool> isAdbAvailable() async {
     try {
       final path = await _resolveAdbPath();
       if (path == null) return false;
-      final result = await Process.run(path, ['version']);
+      final result = await _runner.run(path, ['version']);
       return result.exitCode == 0;
     } catch (_) {
       return false;
@@ -218,7 +224,7 @@ class AdbService {
     try {
       final adb = await _resolveAdbPath();
       if (adb == null) return null;
-      final result = await Process.run(adb, ['version']);
+      final result = await _runner.run(adb, ['version']);
       if (result.exitCode == 0) {
         final lines = (result.stdout as String).split('\n');
         if (lines.isNotEmpty) {
@@ -513,7 +519,7 @@ class AdbService {
           final args = <String>[];
           if (savedDevice != null) args.addAll(['-s', savedDevice]);
           args.addAll(['shell', 'stat', '-c', '%s', remotePath]);
-          final result = await Process.run(adb, args,
+          final result = await _runner.run(adb, args,
               stdoutEncoding: utf8, stderrEncoding: utf8)
               .timeout(const Duration(seconds: 2));
           if (result.exitCode == 0) {
@@ -598,7 +604,7 @@ class AdbService {
     try {
       final adb = await _resolveAdbPath();
       if (adb == null) return false;
-      final result = await Process.run(adb, ['start-server']);
+      final result = await _runner.run(adb, ['start-server']);
       return result.exitCode == 0;
     } catch (_) {
       return false;
@@ -609,7 +615,7 @@ class AdbService {
     try {
       final adb = await _resolveAdbPath();
       if (adb == null) return;
-      await Process.run(adb, ['kill-server']);
+      await _runner.run(adb, ['kill-server']);
     } catch (_) {}
   }
 }

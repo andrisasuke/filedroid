@@ -207,11 +207,14 @@ class DevicePanel extends StatelessWidget {
                 'STORAGE',
                 style: FileDroidTheme.sectionLabelStyle(),
               ),
-              Text(
-                '${info.formattedUsed} / ${info.formattedTotal}',
-                style: const TextStyle(
-                  fontSize: 11,
-                  color: FileDroidTheme.textSecondary,
+              Flexible(
+                child: Text(
+                  '${info.formattedUsed} / ${info.formattedTotal}',
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: FileDroidTheme.textSecondary,
+                  ),
                 ),
               ),
             ],
@@ -317,15 +320,18 @@ class _QuickAccessItemState extends State<_QuickAccessItem> {
                 ),
               ),
               const SizedBox(width: 12),
-              Text(
-                widget.label,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight:
-                      widget.isActive ? FontWeight.w600 : FontWeight.w400,
-                  color: widget.isActive
-                      ? FileDroidTheme.textPrimary
-                      : FileDroidTheme.textSecondary,
+              Expanded(
+                child: Text(
+                  widget.label,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight:
+                        widget.isActive ? FontWeight.w600 : FontWeight.w400,
+                    color: widget.isActive
+                        ? FileDroidTheme.textPrimary
+                        : FileDroidTheme.textSecondary,
+                  ),
                 ),
               ),
             ],
